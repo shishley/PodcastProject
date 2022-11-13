@@ -69,13 +69,13 @@ const getAllPodcasts = async () => {
      * @param {string} id
      */
 
-  const getSinglepodcast = async () => {
+  const getSinglePodcast = async (id) => {
     listHtml.innerHTML = `Loading`
 
-    const response = await fetch('https://podcast-api.netlify.app/id/${id}')
+    const response = await fetch(`https://podcast-api.netlify.app/id/${id}`)
 
     if (!response.ok) {
-        listHtml.innerHTML = 'Issues cames through !'
+        listHtml.innerHTML = 'Issues came through !'
         return
     }
 
@@ -115,7 +115,7 @@ document.body.addEventListener('click', (event) => {
 
     if (!previewButton)
         return
-        getSinglepodcast(previewButton)
+        getSinglePodcast(previewButton)
     
 })
 

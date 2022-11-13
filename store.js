@@ -1,4 +1,24 @@
 class Store {
+/**
+     * 
+     * @param {import('./types').sorting} newSorting 
+     */
+changeSorting(newSorting) {
+    this.update({
+        sorting: newSorting
+    })
+}
+
+ /**
+     * 
+     * @param {string} newSearch 
+     */
+  changeSearch(newSearch) {
+    this.update({
+        search: newSearch
+    })
+}
+
     async loadList() {
         if (this.state.previews.length > 0) {
             return this.update ({
@@ -52,7 +72,7 @@ class Store {
         }
 
         /**
-         * @param {Partial<import('./types).state>} newState
+         * @param {Partial<import('./types').state>} newState
          */
 
         update(newState) {
@@ -68,7 +88,7 @@ class Store {
 
         
         /**
-         * @param {Partial<import('./types).subscription>} subscription
+         * @param {import('./types').subscription} subscription
          */
         subscribe(newSubscription) {
             if (this.subscriptions.includes(newSubscription)) {
@@ -80,7 +100,7 @@ class Store {
         }
 
         /**
-         * @param {Partial<import('./types).subscription>} subscription
+         * @param {import('./types').subscription} subscription
          */
         unsubscribe(newSubscription) {
             if (!this.subscriptions.includes(newSubscription)) {
@@ -93,18 +113,19 @@ class Store {
 
         constructor() {
             /**
-         * @type {import('./types).subscription[]}
+         * @type {import('./types').subscription[]}
          */
 
             this.subscriptions = []
 
               /**
-         * @type {import('./types).state}
+         * @type {import('./types').state}
          */
         this.state = {
             phase: 'loading',
             previews: [],
             single: null,
+            sorting: 'a-z',
         }
 
         this.loadList()
@@ -113,7 +134,15 @@ class Store {
 
     }
 
-
+/**
+ * @param {import('../PodcastProject/types').subscription} fn
+ * @returns
+ */
+ export const connect = (fn) => {
+    const state = store.subscribe(fn)
+    fn(state)
+    return () => store.unsubscribe(fn)
+}
 
 export const store = new Store()
 export default store
